@@ -7,10 +7,11 @@ File::File()
 File::~File()
 {
 	m_data->clear();
+
 	delete m_data;
 }
 
-void File::Load(std::string FileName)
+bool File::Load(std::string FileName)
 {
 	m_data = new FileMap();
 	m_FileName = FileName;
@@ -49,23 +50,11 @@ void File::Load(std::string FileName)
 				datas.clear();
 			}
 		}
+
+		return true;
 	}
 
-}
-
-void File::SetData(std::string tag, std::string value)
-{
-	auto data = m_data->find(tag);
-	//값이 있으면 변경해줌
-	if (data != m_data->end())
-	{
-		data->second = value;
-	}
-	//없으면 새로만들어서 넣어줌
-	else
-	{
-		m_data->insert(std::make_pair(tag, value));
-	}
+	return false;
 }
 
 void File::Save()
@@ -91,14 +80,31 @@ void File::Save()
 	}
 }
 
-std::string File::GetData(std::string tag, std::string& t)
+void File::SetData(std::string tag, std::string value)
 {
+	auto data = m_data->find(tag);
+	//값이 있으면 변경해줌
+	if (data != m_data->end())
+	{
+		data->second = value;
+	}
+	//없으면 새로만들어서 넣어줌
+	else
+	{
+		m_data->insert(std::make_pair(tag, value));
+	}
+}
+
+std::string File::GetData(std::string tag)
+{
+	std::string returnData = "";
+
 	auto data = m_data->find(tag);
 
 	if (data != m_data->end())
 	{
-		t = data->second;
+		returnData = data->second;
 	}
 
-	return t;
+	return returnData;
 }

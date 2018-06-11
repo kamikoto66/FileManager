@@ -23,14 +23,17 @@ void FileManager::Init()
 void FileManager::Load(std::string filename)
 {
 	File* file = new File();
-	file->Load(filename);
-	_Files->insert(std::make_pair(file->GetFileName(), file));
+
+	if (file->Load(filename))
+		_Files->insert(std::make_pair(file->GetFileName(), file));
+
 }
 
 void FileManager::SetData(std::string file, std::string tag, std::string value)
 {
 	auto data = _Files->find(file);
 
+	//map에서 값이없으면 end값을 받아온다
 	if (data != _Files->end())
 	{
 		data->second->SetData(tag, value);
@@ -44,7 +47,7 @@ std::string FileManager::GetData(std::string file, std::string tag)
 
 	if (data != _Files->end())
 	{
-		data->second->GetData(tag, returndata);
+		returndata = data->second->GetData(tag);
 	}
 
 	return returndata;

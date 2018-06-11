@@ -22,11 +22,11 @@ public:
 	File();
 	~File();
 
-	void Load(std::string FileName);
+	bool Load(std::string FileName);
 	void SetData(std::string tag, std::string value);
 	void Save();
 
-	std::string GetData(std::string tag, std::string& t);
+	std::string GetData(std::string tag);
 	std::string GetFileName() const { return m_FileName; }
 };
 
